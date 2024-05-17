@@ -1,0 +1,8 @@
+package br.com.cantina.inteligente.cantinainteligente.model.exceptions;
+
+public class SaldoInsuficienteException extends RuntimeException{
+
+    public SaldoInsuficienteException(String message) {
+        super(message);
+    }
+}
