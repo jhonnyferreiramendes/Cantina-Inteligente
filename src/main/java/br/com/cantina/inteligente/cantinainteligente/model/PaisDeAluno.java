@@ -24,6 +24,7 @@ public class PaisDeAluno extends Usuario {
 
     @ManyToOne
     @JoinColumn(name = "cantina_id")
+    @JsonIgnoreProperties(value = {"nome", "paisDeAluno", "produtos", "cpf", "endereco", "contato", "login"})
     private Cantina cantina;
 
     @ManyToMany

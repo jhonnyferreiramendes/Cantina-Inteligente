@@ -18,5 +18,6 @@ public class ComprarDTO {
     private Double valorTotal;
     private Long acessoCompraId;
     private PaisDeAluno paisDeAluno;
+    private String senhaCartao;
 
 }

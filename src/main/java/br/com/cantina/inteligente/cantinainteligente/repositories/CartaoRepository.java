@@ -10,7 +10,6 @@ public interface CartaoRepository extends JpaRepository<Cartao, Long> {
 
     Optional<Cartao> findById (Long id);
     Optional<Cartao> findByCodigo (String codigo);
-
     List<Cartao> findAll();
 
 }

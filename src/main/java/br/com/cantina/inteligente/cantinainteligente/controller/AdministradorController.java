@@ -100,9 +100,15 @@ public class AdministradorController {
     public ResponseEntity getAllCartao() {
         return ResponseEntity.ok().body(cartaoService.findAll());
     }
+
     @GetMapping("/buscarListaLogin")
     public ResponseEntity getAllLogin() {
         return ResponseEntity.ok().body(loginService.findAll());
+    }
+
+    @GetMapping("/buscarComprasCantinaID/{cantinaId}")
+    public ResponseEntity<List<Comprar>> getAllComprasCantina(@PathVariable("cantinaId") Long cantinaId) {
+        return ResponseEntity.ok().body(comprarService.findComprasByCantinaId(cantinaId));
     }
 
     @PutMapping("/editar{adm}")

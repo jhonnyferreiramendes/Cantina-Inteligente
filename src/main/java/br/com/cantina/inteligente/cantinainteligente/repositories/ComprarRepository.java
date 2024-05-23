@@ -10,4 +10,5 @@ public interface ComprarRepository extends JpaRepository <Comprar, Long> {
 
     Optional<Comprar> findById(Long id);
     List<Comprar> findAll();
+    List<Comprar> findByCantinaId(Long cantinaId);
 }

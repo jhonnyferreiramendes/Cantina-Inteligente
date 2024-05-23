@@ -1,10 +1,7 @@
 package br.com.cantina.inteligente.cantinainteligente.controller.exceptioController;
 
 import br.com.cantina.inteligente.cantinainteligente.exception.PadraoException;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.LimiteInsuficienteException;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.ObjetoNaoEncontradoException;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.ProdutoNaoPermitidoException;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.SaldoInsuficienteException;
+import br.com.cantina.inteligente.cantinainteligente.model.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +57,28 @@ public class ControllerException {
                 .timetamp(LocalDate.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .erro("Produto nao permitido")
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(IdIncorretoException.class)
+    public ResponseEntity<PadraoException> idIncorreto(IdIncorretoException ex, HttpServletRequest request) {
+        PadraoException response = PadraoException.builder()
+                .timetamp(LocalDate.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .erro("ID incorreto")
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(SenhaIncorretaException.class)
+    public ResponseEntity<PadraoException> idIncorreto(SenhaIncorretaException ex, HttpServletRequest request) {
+        PadraoException response = PadraoException.builder()
+                .timetamp(LocalDate.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .erro("Senha incorreta")
                 .message(ex.getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

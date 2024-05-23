@@ -5,10 +5,7 @@ import br.com.cantina.inteligente.cantinainteligente.model.Cartao;
 import br.com.cantina.inteligente.cantinainteligente.model.Comprar;
 import br.com.cantina.inteligente.cantinainteligente.model.PaisDeAluno;
 import br.com.cantina.inteligente.cantinainteligente.model.Produto;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.LimiteInsuficienteException;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.ObjetoNaoEncontradoException;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.ProdutoNaoPermitidoException;
-import br.com.cantina.inteligente.cantinainteligente.model.exceptions.SaldoInsuficienteException;
+import br.com.cantina.inteligente.cantinainteligente.model.exceptions.*;
 import br.com.cantina.inteligente.cantinainteligente.repositories.CartaoRepository;
 import br.com.cantina.inteligente.cantinainteligente.repositories.ComprarRepository;
 import br.com.cantina.inteligente.cantinainteligente.repositories.PaisDeAlunoRepository;
@@ -18,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -61,6 +59,12 @@ public class ComprarService {
         double valorTotal = calcularValorTotal(comprarDTO.getProdutos());
         Cartao cartao = cartaoRepository.findById(comprarDTO.getCartao().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Cartão não encontrado com o ID: " + comprarDTO.getCartao().getId()));
+        if (!cartao.getPaisDeAluno().getId().equals(comprarDTO.getPaisDeAluno().getId())) {
+            throw new IdIncorretoException("O ID do PaisDeAluno fornecido não corresponde ao ID vinculado ao cartão");
+        }
+        if (!cartao.getSenha().equals(comprarDTO.getSenhaCartao())) {
+            throw new SenhaIncorretaException("Senha do cartão incorreta");
+        }
 
         Double limiteDiario = cartao.getLimiteDiario();
         Double saldoCartao = cartao.getSaldo();
@@ -92,7 +96,8 @@ public class ComprarService {
                 comprarDTO.getCantina(),
                 cartao,
                 valorTotal,
-                comprarDTO.getPaisDeAluno()
+                comprarDTO.getPaisDeAluno(),
+                comprarDTO.getSenhaCartao()
         );
 
         return comprarRepository.save(comprar);
@@ -104,5 +109,9 @@ public class ComprarService {
 
     public List<Comprar> findAll() {
         return comprarRepository.findAll();
+    }
+
+    public List<Comprar> findComprasByCantinaId(Long cantinaId) {
+        return comprarRepository.findByCantinaId(cantinaId);
     }
 }

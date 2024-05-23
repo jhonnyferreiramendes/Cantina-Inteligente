@@ -2,6 +2,7 @@ package br.com.cantina.inteligente.cantinainteligente.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +35,7 @@ public class Comprar {
     private Cantina cantina;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = {"senha", "saldo", "saldo", "limiteDiario", "codigo", "limiteDiarioRedefinir", "preco"})
+    @JsonIgnoreProperties(value = {"senha", "saldo", "limiteDiario", "codigo", "limiteDiarioRedefinir", "preco", "paisDeAluno"})
     private Cartao cartao;
 
     private Double valorTotal;
@@ -44,13 +45,17 @@ public class Comprar {
     @JsonIgnoreProperties(value = {"endereco" , "login", "contato", "cantina", "nome", "produtosPermitidos"})
     private PaisDeAluno paisDeAluno;
 
-    public Comprar(LocalDate data, List<Produto> produtos, Cantina cantina, Cartao cartao, Double valorTotal, PaisDeAluno paisDeAluno) {
+    @NotBlank
+    private String senhaCartao;
+
+    public Comprar(LocalDate data, List<Produto> produtos, Cantina cantina, Cartao cartao, Double valorTotal, PaisDeAluno paisDeAluno, String senhaCartao) {
         this.data = data;
         this.produtos = produtos;
         this.cantina = cantina;
         this.cartao = cartao;
         this.valorTotal = valorTotal;
         this.paisDeAluno = paisDeAluno;
+        this.senhaCartao = senhaCartao;
     }
 }
 
